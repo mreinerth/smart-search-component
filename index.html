@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Search Component Demo</title>
+    <script type="module" src="/src/smart-search.ts"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+          'Segoe UI Symbol';
+        background-color: #f0f2f5;
+        color: #1c1e21;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      main {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 500px;
+      }
+      .example {
+        background-color: #fff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+          0 1px 2px rgba(0, 0, 0, 0.24);
+      }
+      h1 {
+        text-align: center;
+        color: #000;
+      }
+      h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: #606770;
+        border-bottom: 1px solid #dddfe2;
+        padding-bottom: 0.5rem;
+      }
+      smart-search {
+        width: 100%;
+      }
+      .description {
+        font-size: 0.9rem;
+        color: #606770;
+        margin-bottom: 1rem;
+      }
+      .data-display {
+        margin-top: 1rem;
+      }
+      .data-display h3 {
+        font-size: 1rem;
+        color: #606770;
+        margin-bottom: 0.5rem;
+      }
+      pre {
+        background-color: #f0f2f5;
+        padding: 1rem;
+        border-radius: 4px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+      code {
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo,
+          monospace;
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Smart Search Component</h1>
+
+      <div class="example">
+        <h2>Flexible Filtering (Nested Keys)</h2>
+        <p class="description">
+          This example is configured to search by <code>type</code>,
+          <code>details.description</code>, or the nested
+          <code>details.owner.name</code>. Try searching for "Savings", "Payment",
+          "Jane Smith", or "Investment".
+        </p>
+        <smart-search
+          id="search-flexible"
+          placeholder="Search by type, description, or owner name"
+        >
+          <svg
+            slot="search-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </smart-search>
+        <div class="data-display">
+          <h3>Sample Data:</h3>
+          <pre><code id="flexible-data-display"></code></pre>
+        </div>
+      </div>
+
+      <div class="example">
+        <h2>Handling Selection Events</h2>
+        <p class="description">
+          Select an item from the list. The <code>result-selected</code> event
+          will fire, and the data for the selected item will be displayed below.
+        </p>
+        <smart-search id="search-events"></smart-search>
+        <div class="data-display">
+          <h3>Selected Item Data:</h3>
+          <pre><code id="event-output">No item selected yet.</code></pre>
+        </div>
+      </div>
+
+      <div class="example">
+        <h2>Async Data Loading</h2>
+        <p class="description">
+          This example simulates fetching data from a server. The loading
+          spinner is shown for 1.5 seconds before the data is loaded.
+        </p>
+        <smart-search
+          id="search-loading"
+          placeholder="Loading data..."
+        ></smart-search>
+      </div>
+
+      <div class="example">
+        <h2>Dark Theme</h2>
+        <smart-search
+          id="search-dark"
+          theme="dark"
+          placeholder="Search in the dark..."
+        ></smart-search>
+      </div>
+
+      <div class="example">
+        <h2>Debounce (500ms)</h2>
+        <smart-search
+          id="search-debounce"
+          placeholder="Try typing quickly..."
+          debounceTimeout="500"
+        ></smart-search>
+      </div>
+
+      <div class="example">
+        <h2>Max Results (1)</h2>
+        <smart-search
+          id="search-max-results"
+          placeholder="Only one result will show"
+          maxResults="1"
+        ></smart-search>
+      </div>
+
+      <div class="example">
+        <h2>Custom 'No Results' Text</h2>
+        <smart-search
+          id="search-no-results"
+          placeholder="Search for something that doesn't exist"
+          noResultsText="Sorry, nothing matched your query."
+        ></smart-search>
+      </div>
+
+      <div class="example">
+        <h2>Disabled</h2>
+        <smart-search
+          id="search-disabled"
+          placeholder="This input is disabled"
+          disabled
+        ></smart-search>
+      </div>
+
+      <div class="example">
+        <h2>Custom Display Key</h2>
+        <p class="description">
+          This example uses <code>displayKey="details.description"</code> to
+          show the description in the results list instead of the default
+          <code>label</code>.
+        </p>
+        <smart-search
+          id="search-display-key"
+          displayKey="details.description"
+        ></smart-search>
+      </div>
+
+      <div class="example">
+        <h2>Listening to Search Input</h2>
+        <p class="description">
+          This example listens for the <code>search-input</code> event, which
+          fires after the debounce timeout. The current input value is displayed
+          below.
+        </p>
+        <smart-search
+          id="search-input-event"
+          debounceTimeout="300"
+        ></smart-search>
+        <div class="data-display">
+          <h3>Current Debounced Input:</h3>
+          <pre><code id="input-event-output"></code></pre>
+        </div>
+      </div>
+
+      <div class="example">
+        <h2>Disabled with Value</h2>
+        <smart-search
+          id="search-disabled-value"
+          value="Account - 001"
+          disabled
+        ></smart-search>
+      </div>
+    </main>
+
+    <script>
+      const searchData = [
+        {
+          id: '1',
+          type: 'Account',
+          label: 'Account - 001',
+          details: {
+            number: '001',
+            description: 'Savings Account',
+            owner: {
+              name: 'John Doe',
+            },
+          },
+        },
+        {
+          id: '2',
+          type: 'Account',
+          label: 'Account - 002',
+          details: {
+            number: '002',
+            description: 'Checking Account',
+            owner: {
+              name: 'Jane Smith',
+            },
+          },
+        },
+        {
+          id: '3',
+          type: 'Transaction',
+          label: 'Transaction - 991',
+          details: {
+            number: '991',
+            description: 'Payment to Jane Smith',
+            owner: {
+              name: 'John Doe',
+            },
+          },
+        },
+        {
+          id: '4',
+          type: 'Account',
+          label: 'Account - 003',
+          details: {
+            number: '003',
+            description: 'Investment Account',
+            owner: {
+              name: 'Peter Jones',
+            },
+          },
+        },
+        {
+          id: '5',
+          type: 'Transaction',
+          label: 'Transaction - 992',
+          details: {
+            number: '992',
+            description: 'Utility Bill Payment',
+            owner: {
+              name: 'Jane Smith',
+            },
+          },
+        },
+      ];
+
+      // --- Centralized Component Configuration ---
+      function configureSearchComponent(id, config) {
+        const element = document.getElementById(id);
+        if (!element) return;
+
+        // Default configuration
+        const defaults = {
+          data: searchData,
+          filterableKeys: ['label'],
+        };
+
+        // Apply config over defaults
+        const finalConfig = { ...defaults, ...config };
+
+        // Assign properties to the element
+        for (const key in finalConfig) {
+          element[key] = finalConfig[key];
+        }
+        return element;
+      }
+
+      // --- Configure All Search Instances ---
+      configureSearchComponent('search-flexible', {
+        filterableKeys: ['type', 'details.description', 'details.owner.name'],
+      });
+      document.getElementById('flexible-data-display').textContent =
+        JSON.stringify(searchData, null, 2);
+
+      const eventSearch = configureSearchComponent('search-events');
+      const eventOutput = document.getElementById('event-output');
+      eventSearch.addEventListener('result-selected', (e) => {
+        eventOutput.textContent = JSON.stringify(e.detail, null, 2);
+      });
+
+      const loadingSearch = document.getElementById('search-loading');
+      loadingSearch.loading = true;
+      setTimeout(() => {
+        loadingSearch.loading = false;
+        loadingSearch.data = searchData;
+        loadingSearch.placeholder = 'Search...';
+      }, 1500);
+
+      configureSearchComponent('search-dark');
+      configureSearchComponent('search-debounce');
+      configureSearchComponent('search-max-results');
+      configureSearchComponent('search-no-results');
+      configureSearchComponent('search-disabled');
+      configureSearchComponent('search-disabled-value');
+      configureSearchComponent('search-display-key');
+
+      const inputEventSearch = configureSearchComponent('search-input-event');
+      const inputEventOutput = document.getElementById('input-event-output');
+      inputEventSearch.addEventListener('search-input', (e) => {
+        inputEventOutput.textContent = e.detail;
+      });
+    </script>
+  </body>
+</html>

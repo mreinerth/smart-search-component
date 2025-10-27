@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Search Positioning Test</title>
+  <script type="module" src="/src/smart-search.ts"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      padding: 0;
+    }
+    .spacer {
+      height: 1500px;
+      border-left: 2px dashed #ccc;
+      margin-left: 100px;
+    }
+    .container {
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Top of Page</h2>
+    <smart-search id="top-search"></smart-search>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="container">
+    <h2>Bottom of Page</h2>
+    <smart-search id="bottom-search"></smart-search>
+  </div>
+
+  <script>
+    const sampleData = [
+      { "id": "1", "label": "Apple", "description": "A round fruit" },
+      { "id": "2", "label": "Banana", "description": "A long yellow fruit" },
+      { "id": "3", "label": "Orange", "description": "A citrus fruit" },
+      { "id": "4", "label": "Pineapple", "description": "A tropical fruit" },
+      { "id": "5", "label": "Strawberry", "description": "A small red fruit" }
+    ];
+
+    document.getElementById('top-search').data = sampleData;
+    document.getElementById('bottom-search').data = sampleData;
+  </script>
+
+</body>
+</html>
